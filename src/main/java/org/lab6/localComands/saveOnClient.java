@@ -6,6 +6,7 @@ import org.lab6.mainClasses.Message;
 import org.lab6.mainClasses.UDP_transmitter;
 
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class saveOnClient extends Command implements CommandWithArgument{
     private String argument;
@@ -18,7 +19,7 @@ public class saveOnClient extends Command implements CommandWithArgument{
         try (var fw = new FileWriter(argument.replaceAll("\"", ""))) {
             fw.write(jsonString);
             System.out.println("successfully saved current LabWork List on client");
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("bad file name");
         }
     }

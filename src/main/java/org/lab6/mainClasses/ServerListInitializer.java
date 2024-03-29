@@ -3,6 +3,7 @@ package org.lab6.mainClasses;
 import org.lab6.Main;
 import org.lab6.storedClasses.LabWork;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,9 +28,10 @@ public class ServerListInitializer {
         }
     }
     private static void getFileFromWay(){
-        System.out.print("insert way to boot file, insert \"null\" to create new collection:");
         boolean flag=false;
+        sc.nextLine();
         while(!flag){
+            System.out.print("insert way to boot file, insert \"null\" to create new collection:");
             flag=tryToGetWay();
         }
 
@@ -37,9 +39,7 @@ public class ServerListInitializer {
 
     private static boolean tryToGetWay(){
         try{
-            String way=sc.nextLine();
-            way=sc.nextLine();
-            String message=way.replace("\"", "").strip();
+            String message=(sc.nextLine()).replace("\"", "").strip();
             if(message.equals("null")) {
                 ArrayList<LabWork> labWorks=new ArrayList();
                 UDP_transmitter.send(Main.getPort(), Main.getAdress(),labWorks);
@@ -48,8 +48,8 @@ public class ServerListInitializer {
                 ArrayList<LabWork> temp = JsonToLabWork.getLabWork(message);
                 UDP_transmitter.send(Main.getPort(),Main.getAdress(),temp);
             }
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+        }catch(FileNotFoundException e){
+            System.out.println("bad file name");
             return false;
         }
         return true;

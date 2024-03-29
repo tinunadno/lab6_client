@@ -2,16 +2,19 @@ package org.lab6;
 
 import org.lab6.mainClasses.*;
 
+
 import java.net.InetAddress;
 
 public class Main {
 
-    private static int port=2223;
+    private static int port=6453;
     private static InetAddress address=null;
     public static void main(String[] args) {
         try {
             address = InetAddress.getLocalHost();
-        }catch(Exception e){}
+        }catch(Exception e){
+            System.out.println("cannot find host");
+        }
         ServerListInitializer.init();
         try{Thread.sleep(500);}catch(Exception e){}
         SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null);
