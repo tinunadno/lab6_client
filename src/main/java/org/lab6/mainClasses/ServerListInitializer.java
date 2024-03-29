@@ -14,10 +14,17 @@ public class ServerListInitializer {
         String clientChose=sc.next();
         if(clientChose.charAt(0)=='c'){
             getFileFromWay();
+            System.out.println("successfully initialized from client device");
         }else if(clientChose.charAt(0)=='s'){
-            new Message("server_boot");
+            Message.append("server_boot");
+            Message.sentMessage();
+            Message message=UDP_transmitter.get(Main.getPort());
+            try {
+                System.out.println(message.getMessage());
+            }catch(NullPointerException e){
+                System.out.println("connection timed out, failed to connect to server");
+            }
         }
-        System.out.println("Initialized succesfully!");
     }
     private static void getFileFromWay(){
         System.out.print("insert way to boot file, insert \"null\" to create new collection:");
@@ -30,7 +37,9 @@ public class ServerListInitializer {
 
     private static boolean tryToGetWay(){
         try{
-            String message=(sc.nextLine()).replace("\"", "").strip();
+            String way=sc.nextLine();
+            way=sc.nextLine();
+            String message=way.replace("\"", "").strip();
             if(message.equals("null")) {
                 ArrayList<LabWork> labWorks=new ArrayList();
                 UDP_transmitter.send(Main.getPort(), Main.getAdress(),labWorks);

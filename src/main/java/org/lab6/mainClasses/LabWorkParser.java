@@ -24,7 +24,7 @@ public class LabWorkParser {
      */
     public static LabWork parseLabWorkFromConsole(){
         try{
-            if(in==null || in.hasNext()==false)in=new Scanner(System.in);
+            if(in==null)in=new Scanner(System.in);
 
             System.out.println("insert LabWork class fields");
             System.out.print("name<String>:");
@@ -50,6 +50,10 @@ public class LabWorkParser {
             String personName=(in.nextLine());
             System.out.print("\tpassportId<String>:");
             String passportId=(in.nextLine());
+            while(passportId.length()<9){
+                System.out.print("passport id length must be >= 9\n\tpassportId<String>:");
+                passportId=(in.nextLine());
+            }
             System.out.print("\teyeColor(Only {RED; BLUE; ORANGE; WHITE} allowed):");
             Color eyeColor=tryparseEnum(Color.class);
             System.out.println("\tLocation:");
@@ -63,6 +67,9 @@ public class LabWorkParser {
             LabWork labwork=new LabWork(name, coordinates, minimalPoint, description, tunedInWorks, difficulty, person);
             System.out.println();
             isFromFile=false;
+            if(isFromFile){
+                in=null;
+            }
             return labwork;
         }catch(NumberFormatException e){System.out.println("oops, you made a mistake, try again"); }
         return null;

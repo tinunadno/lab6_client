@@ -4,6 +4,10 @@ import org.lab6.Main;
 
 public class CommandListSynchronizer {
     public static void synchronizeCommandListWithClient(){
-        CommandReg.setCommandNames(UDP_transmitter.get(Main.getPort()));
+        try {
+            CommandReg.setCommandNames(UDP_transmitter.get(Main.getPort()));
+        }catch(NullPointerException e){
+            System.out.println("failed to synchronize command list with server");
+        }
     }
 }

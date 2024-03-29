@@ -13,7 +13,7 @@ public class Main {
             address = InetAddress.getLocalHost();
         }catch(Exception e){}
         ServerListInitializer.init();
-        try{Thread.sleep(100);}catch(Exception e){}
+        try{Thread.sleep(500);}catch(Exception e){}
         SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null);
         UDP_transmitter.send(getPort(), address, sendedCommand);
         CommandListSynchronizer.synchronizeCommandListWithClient();

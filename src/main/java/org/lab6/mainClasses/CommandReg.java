@@ -1,5 +1,6 @@
 package org.lab6.mainClasses;
 
+import org.jetbrains.annotations.NotNull;
 import org.lab6.Main;
 import org.lab6.localComands.Command;
 import org.lab6.localComands.CommandWithArgument;
@@ -25,7 +26,7 @@ public class CommandReg {
                 System.out.println(value);
         }
     }
-    public static void invoke(String command){
+    public static void invoke(@NotNull String command){
         if(command.length()-(command.replace(" ", "").length())!=0){
             //separating command name and its argument
             String commandArgument=command.substring(command.indexOf(' ')+1, command.length());
@@ -34,28 +35,32 @@ public class CommandReg {
                 ((CommandWithArgument)(commands.get(command))).setArgument(commandArgument);
                 commands.get(command).execute();
             }catch(NullPointerException e) {
+                try {
                 SendedCommand sendedCommand = null;
                 if (commandNames.get(2).contains(command))
                     sendedCommand = new SendedCommand(command, true, commandArgument, true, LabWorkParser.parseLabWorkFromConsole());
                 else
                     sendedCommand = new SendedCommand(command, true, commandArgument, false, null);
                 UDP_transmitter.send(Main.getPort(), Main.getAdress(), sendedCommand);
-                Message message=UDP_transmitter.get(Main.getPort());
-                System.out.println(message.getMessage());
+                }catch (NullPointerException e1){
+                    System.out.println("connection timed out, failed to get anwser from server");
+                }
             }
         }
         else{
             try{
                 commands.get(command).execute();
             }catch (NullPointerException e) {
+                try {
                 SendedCommand sendedCommand;
                 if (commandNames.get(2).contains(command))
                     sendedCommand = new SendedCommand(command, false, "", true, LabWorkParser.parseLabWorkFromConsole());
                 else
                     sendedCommand = new SendedCommand(command, false, "", false, null);
                 UDP_transmitter.send(Main.getPort(), Main.getAdress(), sendedCommand);
-                Message message=UDP_transmitter.get(Main.getPort());
-                System.out.println(message.getMessage());
+                }catch(NullPointerException e1){
+                    System.out.println("connection timed out, failed to get anwser from server");
+                }
             }
         }
     }

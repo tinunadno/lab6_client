@@ -11,7 +11,6 @@ public class UDP_transmitter {
     public static void send(int port, InetAddress host, Object object){
         try {
             DatagramSocket ds = new DatagramSocket();
-
             //Serializing Object
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -38,6 +37,7 @@ public class UDP_transmitter {
     public static<T> T get(int port){
         try {
             DatagramSocket ds = new DatagramSocket(port);
+            //ds.setSoTimeout(1000);
             //getting object info
             byte[] len=new byte[2];
             DatagramPacket dp = new DatagramPacket(len, 2);
