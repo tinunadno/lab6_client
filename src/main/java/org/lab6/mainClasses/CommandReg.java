@@ -1,6 +1,4 @@
 package org.lab6.mainClasses;
-
-import org.jetbrains.annotations.NotNull;
 import org.lab6.Main;
 import org.lab6.localComands.Command;
 import org.lab6.localComands.CommandWithArgument;
@@ -26,7 +24,7 @@ public class CommandReg {
                 System.out.println(value);
         }
     }
-    public static void invoke(@NotNull String command){
+    public static void invoke(String command){
         if(command.length()-(command.replace(" ", "").length())!=0){
             //separating command name and its argument
             String commandArgument=command.substring(command.indexOf(' ')+1, command.length());

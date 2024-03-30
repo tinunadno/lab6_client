@@ -17,8 +17,8 @@ public class ServerListInitializer {
             getFileFromWay();
             System.out.println("successfully initialized from client device");
         }else if(clientChose.charAt(0)=='s'){
-            Message.append("server_boot");
-            Message.sentMessage();
+            Message msg=new Message("server_boot");
+            UDP_transmitter.send(Main.getPort(), Main.getAdress(), msg);
             Message message=UDP_transmitter.get(Main.getPort());
             try {
                 System.out.println(message.getMessage());
