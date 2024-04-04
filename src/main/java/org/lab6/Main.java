@@ -8,6 +8,7 @@ import java.net.InetAddress;
 public class Main {
 
     private static int port=6453;
+    private static int serverPort=6454;
     private static InetAddress address=null;
     public static void main(String[] args) {
         try {
@@ -23,6 +24,7 @@ public class Main {
         ClientCommandsMonitor.startMonitoring();
     }
     public static int getPort(){return port;}
+    public static int getServerPort(){return serverPort;}
     public static InetAddress getAdress(){return address;}
-    public static void incPort(){port++;}
+
 }

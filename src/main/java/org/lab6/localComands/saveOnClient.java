@@ -14,7 +14,7 @@ public class saveOnClient extends Command implements CommandWithArgument{
     @Override
     public void execute(){
         CommandReg.invoke("get_list_as_json");
-        Message message= UDP_transmitter.get(Main.getPort());
+        Message message= UDP_transmitter.get(Main.getServerPort());
         String jsonString=message.getMessage();
         try (var fw = new FileWriter(argument.replaceAll("\"", ""))) {
             fw.write(jsonString);

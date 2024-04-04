@@ -19,7 +19,7 @@ public class ServerListInitializer {
         }else if(clientChose.charAt(0)=='s'){
             Message.append("server_boot");
             Message.sentMessage();
-            Message message=UDP_transmitter.get(Main.getPort());
+            Message message=UDP_transmitter.get(Main.getServerPort());
             try {
                 System.out.println(message.getMessage());
             }catch(NullPointerException e){

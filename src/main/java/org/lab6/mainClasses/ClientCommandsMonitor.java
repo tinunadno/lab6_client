@@ -11,7 +11,7 @@ public class ClientCommandsMonitor {
         while(true){
             CommandReg.invoke(sc.nextLine().strip());
             try{
-                Message message=UDP_transmitter.get(Main.getPort());
+                Message message=UDP_transmitter.get(Main.getServerPort());
                 System.out.println(message.getMessage());
             }catch (NullPointerException e1){
                 System.out.println("connection timed out, failed to get anwser from server");
