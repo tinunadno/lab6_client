@@ -8,11 +8,12 @@ import java.net.InetAddress;
 public class Main {
 
     private static int port=6453;
-    private static int serverPort=6454;
+    private static int serverPort=6464;
     private static InetAddress address=null;
     public static void main(String[] args) {
         try {
             address = InetAddress.getLocalHost();
+            //address=InetAddress.getByName("192.168.10.80");
         }catch(Exception e){
             System.out.println("cannot find host");
         }
