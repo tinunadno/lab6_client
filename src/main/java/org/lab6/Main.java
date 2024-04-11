@@ -17,8 +17,15 @@ public class Main {
         }catch(Exception e){
             System.out.println("cannot find host");
         }
-        ServerListInitializer.init();
-        try{Thread.sleep(500);}catch(Exception e){}
+
+        UDP_transmitter.send(port, address, "init");
+        String[] ports=(((Message)UDP_transmitter.get(serverPort)).getMessage()).split("%");
+        port=Integer.parseInt(ports[0]);
+        serverPort=Integer.parseInt(ports[1]);
+        System.out.println(port);
+        System.out.println(serverPort);
+        try{Thread.sleep(500);}
+        catch(InterruptedException e){}
         SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null);
         UDP_transmitter.send(getPort(), address, sendedCommand);
         CommandListSynchronizer.synchronizeCommandListWithClient();

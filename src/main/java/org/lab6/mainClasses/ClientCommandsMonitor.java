@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class ClientCommandsMonitor {
     private static Scanner sc;
     public static void startMonitoring(){
+        System.out.println("asdasd");
         sc=new Scanner(System.in);
         while(true){
             CommandReg.invoke(sc.nextLine().strip());
