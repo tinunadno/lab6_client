@@ -64,7 +64,7 @@ public class LabWorkParser {
             Location location=new Location(locationX, locationY, locationName);
             Person person = new Person(personName, passportId, eyeColor, location);
 
-            LabWork labwork=new LabWork(name, coordinates, minimalPoint, description, tunedInWorks, difficulty, person);
+            LabWork labwork=new LabWork(-1,-1,name, coordinates,"crDate", minimalPoint, description, tunedInWorks, difficulty, person);
             System.out.println();
             isFromFile=false;
             if(isFromFile){
