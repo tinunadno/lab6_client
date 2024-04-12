@@ -3,7 +3,6 @@ package org.lab6.storedClasses;
 import java.io.Serializable;
 
 public class LabWork implements Comparable<LabWork>, Serializable {
-    private static long[] ids = {0};
     private long id;
     private int userID;
     private String name;
@@ -33,7 +32,6 @@ public class LabWork implements Comparable<LabWork>, Serializable {
             this.tunedInWorks = tunedInWorks;
             this.difficulty = difficulty;
             this.author = author;
-            this.id = ids.length;
         }
     }
 
@@ -43,11 +41,12 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     public long getID() {
         return id;
     }
-    public int getUserID(){return userID;}
 
     public String getName() {
         return name;
     }
+
+    public int getUserID(){return userID;}
 
     public Coordinates getCoordinates() {
         return coordinates;
@@ -85,7 +84,7 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     }
 
     public String toString() {
-        return "[id:" + id + ", name:" + name + ",\ncoordinates:" + coordinates.toString() + ", \ncreationDate:" + creationDate.toString() + ", \nminimalPoint:" + minimalPoint + ", \ndescription:" + description + ", \ntunedInWorks:" + tunedInWorks + ", \ndifficulty:" + difficulty + ", \nauthor:" + author.toString() + "]";
+        return "[id:" + id + ",\n userID: "+userID+",\n name:" + name + ",\ncoordinates:" + coordinates.toString() + ", \ncreationDate:" + creationDate.toString() + ", \nminimalPoint:" + minimalPoint + ", \ndescription:" + description + ", \ntunedInWorks:" + tunedInWorks + ", \ndifficulty:" + difficulty + ", \nauthor:" + author.toString() + "]";
     }
 
     public String getFieldsAsTuple(){
