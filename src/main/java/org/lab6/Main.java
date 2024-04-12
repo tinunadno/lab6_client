@@ -7,8 +7,8 @@ import java.net.InetAddress;
 
 public class Main {
 
-    private static int port=6453;
-    private static int serverPort=6464;
+    private static int port=17937;
+    private static int serverPort=17938;
     private static InetAddress address=null;
     public static void main(String[] args) {
         try {
