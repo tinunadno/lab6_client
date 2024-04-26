@@ -4,13 +4,16 @@ import org.lab6.mainClasses.*;
 
 
 import java.net.InetAddress;
+import java.util.UUID;
 
 public class Main {
 
     private static int port=17937;
     private static int serverPort=17938;
     private static InetAddress address=null;
+    private static UUID userToken;
     public static void main(String[] args) {
+
         try {
             //address = InetAddress.getLocalHost();
             address=InetAddress.getByName("192.168.10.80");
@@ -23,18 +26,32 @@ public class Main {
         String[] ports=(((Message)UDP_transmitter.get(serverPort)).getMessage()).split("%");
         port=Integer.parseInt(ports[0]);
         serverPort=Integer.parseInt(ports[1]);
-        System.out.println(port);
-        System.out.println(serverPort);
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                    SendedCommand disconnectCommand=new SendedCommand("disconnect",false,"",false,null, Main.getUserToken());
+                    UDP_transmitter.send(port, address, disconnectCommand);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         UserAuthorizer.authorize();
         try{Thread.sleep(500);}
         catch(InterruptedException e){}
-        SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null);
+        SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null, Main.getUserToken());
         UDP_transmitter.send(getPort(), address, sendedCommand);
         CommandListSynchronizer.synchronizeCommandListWithClient();
         ClientCommandsMonitor.startMonitoring();
     }
+    public static UUID getUserToken(){return userToken;}
     public static int getPort(){return port;}
     public static int getServerPort(){return serverPort;}
     public static InetAddress getAdress(){return address;}
-
+    public static void setUserToken(UUID token){userToken=token;}
 }

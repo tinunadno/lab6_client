@@ -24,6 +24,7 @@ public class UserAuthorizer {
         }
         tryToSend("insert user name:");
         tryToSend("insert password:");
+        Main.setUserToken(((Message)(UDP_transmitter.get(Main.getPort()))).getToken());
         System.out.println("successfully authorized!");
     }
     private static void tryToSend(String message){

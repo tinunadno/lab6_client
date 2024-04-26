@@ -27,6 +27,7 @@ public class LabWorkParser {
             if(in==null)in=new Scanner(System.in);
 
             System.out.println("insert LabWork class fields");
+            double price=tryParseNumber("price<double>:", Double::parseDouble);
             System.out.print("name<String>:");
             String name=in.nextLine();
 
@@ -64,7 +65,7 @@ public class LabWorkParser {
             Location location=new Location(locationX, locationY, locationName);
             Person person = new Person(personName, passportId, eyeColor, location);
 
-            LabWork labwork=new LabWork(-1,-1,name, coordinates,"crDate", minimalPoint, description, tunedInWorks, difficulty, person);
+            LabWork labwork=new LabWork(-1,-1,null,price,name, coordinates,"crDate", minimalPoint, description, tunedInWorks, difficulty, person);
             System.out.println();
             isFromFile=false;
             if(isFromFile){

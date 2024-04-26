@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class LabWork implements Comparable<LabWork>, Serializable {
     private long id;
     private int userID;
+    private String userName;
+    private double price;
     private String name;
     private Coordinates coordinates;
     private String creationDate;
@@ -14,7 +16,7 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     private Difficulty difficulty;
     private Person author;
 
-    public LabWork(int id,int userID,String name, Coordinates coordinates, String creationDate, double minimalPoint, String description, Integer tunedInWorks, Difficulty difficulty, Person author) {
+    public LabWork(int id,int userID, String userName,double price,String name, Coordinates coordinates, String creationDate, double minimalPoint, String description, Integer tunedInWorks, Difficulty difficulty, Person author) {
         if (name.equals(null) || name.equals("")) throw new NullPointerException("name cant be null");
         if (coordinates == null) throw new NullPointerException("Coordinates cant be null");
         if (description.equals(null)) throw new NullPointerException("Description cant be null");
@@ -24,6 +26,8 @@ public class LabWork implements Comparable<LabWork>, Serializable {
         else {
             this.id=id;
             this.userID=userID;
+            this.userName=userName;
+            this.price=price;
             this.name = name;
             this.coordinates = coordinates;
             this.creationDate=creationDate;
@@ -36,6 +40,9 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     }
 
     public void setID(int id){this.id=id;}
+    public void setUserName(String name){
+        this.userName=name;
+    }
     public void setUserID(int userID){this.userID=userID;}
     public void setCreationDate(String creationDate){this.creationDate=creationDate;}
     public long getID() {
@@ -47,6 +54,7 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     }
 
     public int getUserID(){return userID;}
+    public double getPrice(){return price;}
 
     public Coordinates getCoordinates() {
         return coordinates;
@@ -84,11 +92,11 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     }
 
     public String toString() {
-        return "[id:" + id + ",\n userID: "+userID+",\n name:" + name + ",\ncoordinates:" + coordinates.toString() + ", \ncreationDate:" + creationDate.toString() + ", \nminimalPoint:" + minimalPoint + ", \ndescription:" + description + ", \ntunedInWorks:" + tunedInWorks + ", \ndifficulty:" + difficulty + ", \nauthor:" + author.toString() + "]";
+        return "[id:" + id + ",\n userID: "+userID+"\n userName: "+userName+"\n price: "+price+",\n name:" + name + ",\ncoordinates:" + coordinates.toString() + ", \ncreationDate:" + creationDate.toString() + ", \nminimalPoint:" + minimalPoint + ", \ndescription:" + description + ", \ntunedInWorks:" + tunedInWorks + ", \ndifficulty:" + difficulty + ", \nauthor:" + author.toString() + "]";
     }
 
     public String getFieldsAsTuple(){
-        return"("+userID+",'"+name+"',%1,"+minimalPoint+",'"+description+"',"+tunedInWorks+",'"+difficulty.toString()+"',%2)";
+        return"("+userID+",'"+userName+"',"+price+",'"+name+"',%1,"+minimalPoint+",'"+description+"',"+tunedInWorks+",'"+difficulty.toString()+"',%2)";
     }
 
     public String toJson() {
