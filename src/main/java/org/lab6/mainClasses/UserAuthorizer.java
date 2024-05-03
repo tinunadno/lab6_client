@@ -14,10 +14,14 @@ public class UserAuthorizer {
             option=in.next();
         }
         UDP_transmitter.send(Main.getPort(), Main.getAdress(), option);
-        if(option.equals("r")){
-            System.out.print("insert new user name:");
-            UDP_transmitter.send(Main.getPort(), Main.getAdress(), (new Message(in.next())));
-
+        if(option.equals("r")) {
+            String message = "failure";
+            while (!message.equals("")) {
+                System.out.print("\ninsert new user name:");
+                UDP_transmitter.send(Main.getPort(), Main.getAdress(), (new Message(in.next())));
+                message=((Message)UDP_transmitter.get(Main.getServerPort())).getMessage();
+                System.out.print(message);
+            }
             System.out.print("insert new user password:");
             UDP_transmitter.send(Main.getPort(), Main.getAdress(), (new Message(in.next())));
             System.out.println(((Message)UDP_transmitter.get(Main.getServerPort())).getMessage());
