@@ -13,13 +13,13 @@ public class SendedCommand implements Serializable {
     private boolean needParsedInstance;
     private LabWork parsedInstance;
     private UUID token;
-    public SendedCommand(String commandName, boolean argumentExists, String argument, boolean needParsedInstance, LabWork parsedInstance, UUID token){
+    public SendedCommand(String commandName, boolean argumentExists, String argument, boolean needParsedInstance, LabWork parsedInstance){
         this.commandName=commandName;
         this.argumentExists=argumentExists;
         this.argument=argument;
         this.needParsedInstance=needParsedInstance;
         this.parsedInstance=parsedInstance;
-        this.token= token;
+        this.token= Main.getUserToken();
     }
     public String getCommandName(){return commandName;}
     public boolean isArgumentExists(){return argumentExists;}

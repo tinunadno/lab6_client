@@ -26,12 +26,13 @@ public class Main {
         String[] ports=(((Message)UDP_transmitter.get(serverPort)).getMessage()).split("%");
         port=Integer.parseInt(ports[0]);
         serverPort=Integer.parseInt(ports[1]);
+        Main.setUserToken(((Message)(UDP_transmitter.get(Main.getPort()))).getToken());
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 try {
                     Thread.sleep(200);
-                    SendedCommand disconnectCommand=new SendedCommand("disconnect",false,"",false,null, Main.getUserToken());
+                    SendedCommand disconnectCommand=new SendedCommand("disconnect",false,"",false,null);
                     UDP_transmitter.send(port, address, disconnectCommand);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -44,7 +45,7 @@ public class Main {
         UserAuthorizer.authorize();
         try{Thread.sleep(500);}
         catch(InterruptedException e){}
-        SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null, Main.getUserToken());
+        SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null);
         UDP_transmitter.send(getPort(), address, sendedCommand);
         CommandListSynchronizer.synchronizeCommandListWithClient();
         ClientCommandsMonitor.startMonitoring();
