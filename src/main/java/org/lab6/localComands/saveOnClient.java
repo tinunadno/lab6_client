@@ -3,7 +3,7 @@ package org.lab6.localComands;
 import org.lab6.Main;
 import org.lab6.mainClasses.CommandReg;
 import org.lab6.mainClasses.Message;
-import org.lab6.mainClasses.UDP_transmitter;
+import org.lab6.mainClasses.Client_UDP_Transmitter;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class saveOnClient extends Command implements CommandWithArgument{
     @Override
     public void execute(){
         CommandReg.invoke("get_list_as_json");
-        Message message= UDP_transmitter.get(Main.getServerPort());
+        Message message= (Message) Client_UDP_Transmitter.getObject();
         String jsonString=message.getMessage();
         try (var fw = new FileWriter(argument.replaceAll("\"", ""))) {
             fw.write(jsonString);

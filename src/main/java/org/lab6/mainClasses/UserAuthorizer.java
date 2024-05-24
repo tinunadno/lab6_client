@@ -16,12 +16,12 @@ public class UserAuthorizer {
         if(option.equals("r")){
             System.out.print("insert new user name:");
             SendedCommand commandName=new SendedCommand("authorize_name_r", true, in.next(), false, null);
-            UDP_transmitter.send(Main.getPort(), Main.getAdress(), commandName);
-            System.out.println(((Message)UDP_transmitter.get(Main.getServerPort())).getMessage());
+            Client_UDP_Transmitter.sendObject(commandName);
+            System.out.println(((Message) Client_UDP_Transmitter.getObject()).getMessage());
             System.out.print("insert new user password:");
             SendedCommand commandPassword=new SendedCommand("authorize_password_r", true, in.next(), false, null);
-            UDP_transmitter.send(Main.getPort(), Main.getAdress(), commandPassword);
-            System.out.println(((Message)UDP_transmitter.get(Main.getServerPort())).getMessage());
+            Client_UDP_Transmitter.sendObject(commandPassword);
+            System.out.println(((Message)Client_UDP_Transmitter.getObject()).getMessage());
         }
         tryToSendUserName("insert user name:");
         tryToSendUserPassword("insert password:");
@@ -33,8 +33,8 @@ public class UserAuthorizer {
         String response="";
         while (true){
             SendedCommand commandPassword=new SendedCommand("authorize_name_a", true, in.next(), false, null);
-            UDP_transmitter.send(Main.getPort(), Main.getAdress(), commandPassword);
-            response=((Message)UDP_transmitter.get(Main.getServerPort())).getMessage();
+            Client_UDP_Transmitter.sendObject(commandPassword);
+            response=((Message)Client_UDP_Transmitter.getObject()).getMessage();
             if(response.equals("successfully authorized user name\n"))break;
             else System.out.println(response);
         }
@@ -46,8 +46,8 @@ public class UserAuthorizer {
         String response="";
         while (true){
             SendedCommand commandPassword=new SendedCommand("authorize_password_a", true, in.next(), false, null);
-            UDP_transmitter.send(Main.getPort(), Main.getAdress(), commandPassword);
-            response=((Message)UDP_transmitter.get(Main.getServerPort())).getMessage();
+            Client_UDP_Transmitter.sendObject(commandPassword);
+            response=((Message)Client_UDP_Transmitter.getObject()).getMessage();
             if(response.equals("successfully authorized!\n"))break;
             else System.out.println(response);
         }

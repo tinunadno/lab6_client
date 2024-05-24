@@ -39,7 +39,7 @@ public class CommandReg {
                     sendedCommand = new SendedCommand(command, true, commandArgument, true, LabWorkParser.parseLabWorkFromConsole());
                 else
                     sendedCommand = new SendedCommand(command, true, commandArgument, false, null);
-                UDP_transmitter.send(Main.getPort(), Main.getAdress(), sendedCommand);
+                Client_UDP_Transmitter.sendObject(sendedCommand);
                 }catch (NullPointerException e1){
                     System.out.println("connection timed out, failed to get anwser from server");
                 }
@@ -55,7 +55,7 @@ public class CommandReg {
                     sendedCommand = new SendedCommand(command, false, "", true, LabWorkParser.parseLabWorkFromConsole());
                 else
                     sendedCommand = new SendedCommand(command, false, "", false, null);
-                UDP_transmitter.send(Main.getPort(), Main.getAdress(), sendedCommand);
+                Client_UDP_Transmitter.sendObject(sendedCommand);
                 }catch(NullPointerException e1){
                     System.out.println("connection timed out, failed to get anwser from server");
                 }

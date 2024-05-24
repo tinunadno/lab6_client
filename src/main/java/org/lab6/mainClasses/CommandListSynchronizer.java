@@ -2,14 +2,16 @@ package org.lab6.mainClasses;
 
 import org.lab6.Main;
 
+import java.util.ArrayList;
+
 public class CommandListSynchronizer {
     public static void synchronizeCommandListWithClient(){
         try {
-            CommandReg.setCommandNames(UDP_transmitter.get(Main.getServerPort()));
+            CommandReg.setCommandNames((ArrayList<ArrayList<String>>) Client_UDP_Transmitter.getObject());
         }catch(NullPointerException e){
             System.out.println("failed to synchronize command list with server");
         }catch(ClassCastException e){
-            System.out.println("you have bad user token, reconnect to update it");
+            System.out.println("unexpected object");
         }
     }
 }
