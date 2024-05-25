@@ -8,17 +8,21 @@ import java.nio.channels.DatagramChannel;
 
 public class Client_UDP_Transmitter {
     private static Client_UDP_Transmitter transmitter;
-    public static void sendObject(Object obj){
+
+    public static void sendObject(Object obj) {
         transmitter.send(obj);
     }
-    public static Object getObject(){
+
+    public static Object getObject() {
         return transmitter.get();
     }
+
     private InetSocketAddress serverAddress;
     private ByteBuffer serverAcceptBuffer;
     private DatagramChannel channel;
-    public Client_UDP_Transmitter(InetAddress serverAdress, int serverPort){
-        if(transmitter==null) {
+
+    public Client_UDP_Transmitter(InetAddress serverAdress, int serverPort) {
+        if (transmitter == null) {
             serverAddress = new InetSocketAddress(serverAdress, serverPort);
             serverAcceptBuffer = ByteBuffer.allocate(5000);
             try {
@@ -29,20 +33,22 @@ public class Client_UDP_Transmitter {
             transmitter = this;
         }
     }
-    public void send(Object sendingObject){
+
+    public void send(Object sendingObject) {
         try {
-            ByteArrayOutputStream bos=new ByteArrayOutputStream();
-            ObjectOutputStream oos=new ObjectOutputStream(bos);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
             oos.writeObject(sendingObject);
             oos.close();
             ByteBuffer buffer = ByteBuffer.wrap(bos.toByteArray());
             channel.send(buffer, serverAddress);
             buffer.clear();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public Object get(){
+
+    public Object get() {
         try {
             serverAddress = (InetSocketAddress) channel.receive(serverAcceptBuffer);
             serverAcceptBuffer.flip();
@@ -54,17 +60,18 @@ public class Client_UDP_Transmitter {
             Object ret = in.readObject();
             serverAcceptBuffer.clear();
             return ret;
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public static void clearChannel(){
+
+    public static void clearChannel() {
         try {
             transmitter.channel.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
