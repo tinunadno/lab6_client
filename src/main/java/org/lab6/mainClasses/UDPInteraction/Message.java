@@ -1,6 +1,4 @@
-package org.lab6.mainClasses;
-
-import org.lab6.Main;
+package org.lab6.mainClasses.UDPInteraction;
 
 import java.io.Serializable;
 import java.util.UUID;

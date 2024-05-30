@@ -1,6 +1,7 @@
-package org.lab6.mainClasses;
+package org.lab6.mainClasses.CommandInteracting;
 
-import org.lab6.Main;
+import org.lab6.mainClasses.UDPInteraction.Client_UDP_Transmitter;
+import org.lab6.mainClasses.UDPInteraction.Message;
 
 import java.util.Scanner;
 

@@ -1,9 +1,10 @@
-package org.lab6.mainClasses;
-import org.lab6.Main;
+package org.lab6.mainClasses.CommandInteracting;
 import org.lab6.localComands.Command;
 import org.lab6.localComands.CommandWithArgument;
 import org.lab6.localComands.exit;
 import org.lab6.localComands.saveOnClient;
+import org.lab6.mainClasses.UDPInteraction.Client_UDP_Transmitter;
+import org.lab6.mainClasses.UDPInteraction.SendedCommand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,11 +36,13 @@ public class CommandReg {
             }catch(NullPointerException e) {
                 try {
                 SendedCommand sendedCommand = null;
-                if (commandNames.get(2).contains(command))
-                    sendedCommand = new SendedCommand(command, true, commandArgument, true, LabWorkParser.parseLabWorkFromConsole());
-                else
+                if (commandNames.get(2).contains(command)) {
+                    (new LabWorkParser()).parseLabWork(command, commandArgument);
+                }
+                else {
                     sendedCommand = new SendedCommand(command, true, commandArgument, false, null);
-                Client_UDP_Transmitter.sendObject(sendedCommand);
+                    Client_UDP_Transmitter.sendObject(sendedCommand);
+                }
                 }catch (NullPointerException e1){
                     System.out.println("connection timed out, failed to get anwser from server");
                 }
@@ -51,11 +54,13 @@ public class CommandReg {
             }catch (NullPointerException e) {
                 try {
                 SendedCommand sendedCommand;
-                if (commandNames.get(2).contains(command))
-                    sendedCommand = new SendedCommand(command, false, "", true, LabWorkParser.parseLabWorkFromConsole());
-                else
+                if (commandNames.get(2).contains(command)) {
+                    (new LabWorkParser()).parseLabWork(command, null);
+                }
+                else {
                     sendedCommand = new SendedCommand(command, false, "", false, null);
-                Client_UDP_Transmitter.sendObject(sendedCommand);
+                    Client_UDP_Transmitter.sendObject(sendedCommand);
+                }
                 }catch(NullPointerException e1){
                     System.out.println("connection timed out, failed to get anwser from server");
                 }

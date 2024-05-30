@@ -1,4 +1,4 @@
-package org.lab6.mainClasses;
+package org.lab6.mainClasses.UDPInteraction;
 
 import java.io.*;
 import java.net.InetAddress;

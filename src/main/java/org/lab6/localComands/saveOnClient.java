@@ -1,9 +1,8 @@
 package org.lab6.localComands;
 
-import org.lab6.Main;
-import org.lab6.mainClasses.CommandReg;
-import org.lab6.mainClasses.Message;
-import org.lab6.mainClasses.Client_UDP_Transmitter;
+import org.lab6.mainClasses.CommandInteracting.CommandReg;
+import org.lab6.mainClasses.UDPInteraction.Message;
+import org.lab6.mainClasses.UDPInteraction.Client_UDP_Transmitter;
 
 import java.io.FileWriter;
 import java.io.IOException;

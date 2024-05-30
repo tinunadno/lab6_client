@@ -1,6 +1,9 @@
 package org.lab6;
 
-import org.lab6.mainClasses.*;
+import org.lab6.mainClasses.Authorize.UserAuthorizeForm;
+import org.lab6.mainClasses.UDPInteraction.Client_UDP_Transmitter;
+import org.lab6.mainClasses.UDPInteraction.Message;
+import org.lab6.mainClasses.UDPInteraction.SendedCommand;
 
 
 import java.net.InetAddress;
@@ -12,10 +15,9 @@ public class Main {
     private static InetAddress address=null;
     private static UUID userToken;
     public static void main(String[] args) {
-
         try {
-            //address = InetAddress.getLocalHost();
-            address=InetAddress.getByName("192.168.10.80");
+            address = InetAddress.getLocalHost();
+            //address=InetAddress.getByName("192.168.10.80");
         }catch(Exception e){
             System.out.println("cannot find host");
         }
@@ -38,13 +40,8 @@ public class Main {
         });
 
 
-        UserAuthorizer.authorize();
-        try{Thread.sleep(500);}
-        catch(InterruptedException e){}
-        SendedCommand sendedCommand=new SendedCommand("synchronize", false, "", false, null);
-        Client_UDP_Transmitter.sendObject(sendedCommand);
-        CommandListSynchronizer.synchronizeCommandListWithClient();
-        ClientCommandsMonitor.startMonitoring();
+        new UserAuthorizeForm();
+
     }
     public static UUID getUserToken(){return userToken;}
     public static void setUserToken(UUID token){userToken=token;}
