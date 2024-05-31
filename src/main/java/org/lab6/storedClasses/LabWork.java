@@ -1,5 +1,6 @@
 package org.lab6.storedClasses;
 
+import javax.imageio.plugins.tiff.TIFFImageReadParam;
 import java.io.Serializable;
 
 public class LabWork implements Comparable<LabWork>, Serializable {
@@ -22,7 +23,6 @@ public class LabWork implements Comparable<LabWork>, Serializable {
         if (description.equals(null)) throw new NullPointerException("Description cant be null");
         if (tunedInWorks == null) throw new NullPointerException("tunedInWorks cant be null");
         if (difficulty == null) throw new NullPointerException("difficulty cant be null");
-        if (minimalPoint <= 0.0) throw new WrongValueException("minimalPoint must be > 0");
         else {
             this.id=id;
             this.userID=userID;
@@ -54,6 +54,7 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     }
 
     public int getUserID(){return userID;}
+    public String getUserName(){return userName;}
     public double getPrice(){return price;}
 
     public Coordinates getCoordinates() {
@@ -98,8 +99,24 @@ public class LabWork implements Comparable<LabWork>, Serializable {
     public String getFieldsAsTuple(){
         return"("+userID+",'"+userName+"',"+price+",'"+name+"',%1,"+minimalPoint+",'"+description+"',"+tunedInWorks+",'"+difficulty.toString()+"',%2)";
     }
-
+    public String[] getFields(){
+        String[] ret={id+"",userID+"", userName, price+"", name, minimalPoint+"", description, tunedInWorks+"", difficulty.toString(), author.getName()};
+        return ret;
+    }
     public String toJson() {
         return "{\n\"name\": \"" + getName() + "\",\n" + coordinates.toJson() + ",\n\"minimalPoint\": " + getMinimalPoint() + ",\n\"description\": \"" + getDescription() + "\",\n\"tunedInWorks\": " + getTunedInWorks() + ",\n\"Difficulty\": \"" + getDifficulty() + "\",\n" + getAuthor().toJson() + "\n}";
+    }
+    public String getParameterByName(String parameter){
+        if(parameter.equals("id")) return id+"";
+        if(parameter.equals("userID"))return userID+"";
+        if(parameter.equals("userName"))return userName;
+        if(parameter.equals("price"))return price+"";
+        if(parameter.equals("name")) return name;
+        if(parameter.equals("minimalPoint")) return minimalPoint+"";
+        if(parameter.equals("description"))return description;
+        if(parameter.equals("tunedInWorks"))return tunedInWorks+"";
+        if(parameter.equals("difficulty"))return difficulty.toString();
+        if(parameter.equals("author"))return author.getName();
+        return null;
     }
 }

@@ -8,7 +8,9 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.lab6.Main;
 import org.lab6.mainClasses.CommandInteracting.CommandListSynchronizer;
+import org.lab6.mainClasses.CommandInteracting.CommandReg;
 import org.lab6.mainClasses.CommandInteracting.UserInterfaceForm;
 import org.lab6.mainClasses.UDPInteraction.Client_UDP_Transmitter;
 import org.lab6.mainClasses.UDPInteraction.Message;
@@ -86,18 +88,17 @@ public class UserAuthorizeForm{
         SendedCommand commandName=new SendedCommand("authorize_name_a", true, userName, false, null);
         Client_UDP_Transmitter.sendObject(commandName);
         String msg=((Message) Client_UDP_Transmitter.getObject()).getMessage();
-        System.out.println(msg);
         if(msg.equals("successfully authorized user name\n")) {
             SendedCommand commandPassword = new SendedCommand("authorize_password_a", true, password, false, null);
             Client_UDP_Transmitter.sendObject(commandPassword);
             if (!(((Message) Client_UDP_Transmitter.getObject()).getMessage()).equals("successfully authorized!\n"))
                 JOptionPane.showMessageDialog(null, "wrong password", "register error", JOptionPane.INFORMATION_MESSAGE);
             else{
+                //success authorization
                 JOptionPane.showMessageDialog(null, "successfully authorized", "authorize success", JOptionPane.INFORMATION_MESSAGE);
                 frame.dispose();
                 CommandListSynchronizer.synchronizeCommandListWithClient();
-                //ClientCommandsMonitor.startMonitoring();
-                new UserInterfaceForm();
+                new UserInterfaceForm(userName);
             }
         }else{
             JOptionPane.showMessageDialog(null, "can't find user with this name", "authorize error", JOptionPane.INFORMATION_MESSAGE);

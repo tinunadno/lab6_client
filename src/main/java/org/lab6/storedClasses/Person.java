@@ -11,7 +11,6 @@ public class Person implements Serializable {
 
 	public Person(String name, String passportID, Color eyeColor, Location location){
 		if(name==null || name.equals(""))throw new NullPointerException("name can't be null");
-		if(passportID.length()>36 || passportID.length()<9)throw new WrongValueException("passportID length mnust be >=9 and <36");
 		if(!chekckPassport(passportID)){
 			addPassport(passportID);
 			this.name=name;
@@ -19,7 +18,6 @@ public class Person implements Serializable {
 			this.eyeColor=eyeColor;
 			this.location=location;
 		}
-		else throw new UniqeValueCollisionException("Person with this passport already exists");
 	}
 
 	private static boolean chekckPassport(String passport){

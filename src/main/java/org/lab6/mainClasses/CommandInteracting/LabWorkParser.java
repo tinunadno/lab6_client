@@ -7,153 +7,188 @@ import org.lab6.storedClasses.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.function.Function;
 
 public class LabWorkParser {
-    private LabWork lw;
-    public void parseLabWork(String commandName, String argument){
-        UserInterfaceForm.setWait(false);
-            JFrame parseFrame = new JFrame("LabWork parse");
+    protected LabWork lw;
+    protected JFrame parseFrame;
+    private JTextField priceField;
+    private JTextField labWorkNameTextField;
+    private JTextField coordinatesX;
+    private JTextField coordinatesY;
+    private JTextField minPointField;
+    private JTextField descField;
+    private JTextField tunedInWorksField;
+    private JTextField difficultyField;
+    private JTextField personNameField;
+    private JTextField personPassportField;
+    private JTextField personEyeColorField;
+    private JTextField locationX;
+    private JTextField locationY;
+    private JTextField locationNameField;
+
+    public LabWorkParser(String commandName, LabWork lwInstance, boolean isMyLabWork) {
+        lw = lwInstance;
+        if (commandName == null && !isMyLabWork) {
+            JOptionPane.showMessageDialog(null, "you aren't owner! If you want to edit this instance, you have to buy it",
+                    "server response", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            parseFrame = new JFrame("LabWork parse");
             parseFrame.setLayout(new GridLayout(20, 2));
 
             parseFrame.add(new JLabel(""));
             parseFrame.add(new JLabel("LabWork fields"));
 
             parseFrame.add(new JLabel("price<double>"));
-            JTextField priceField = new JTextField();
+            priceField = new JTextField();
+            if (lw != null) priceField.setText(lw.getPrice() + "");
             parseFrame.add(priceField);
 
             parseFrame.add(new JLabel("LabWork name"));
-            JTextField labWorkNameTextField = new JTextField();
+            labWorkNameTextField = new JTextField();
+            if (lw != null) labWorkNameTextField.setText(lw.getName());
             parseFrame.add(labWorkNameTextField);
 
             parseFrame.add(new JLabel(""));
             parseFrame.add(new JLabel("Coordinates fields"));
 
             parseFrame.add(new JLabel("    x<Float>"));
-            JTextField coordinatesX = new JTextField();
+            coordinatesX = new JTextField();
+            if (lw != null) coordinatesX.setText(lw.getCoordinates().getX() + "");
             parseFrame.add(coordinatesX);
 
             parseFrame.add(new JLabel("    y<int>"));
-            JTextField coordinatesY = new JTextField();
+            coordinatesY = new JTextField();
+            if (lw != null) coordinatesY.setText(lw.getCoordinates().getY() + "");
             parseFrame.add(coordinatesY);
 
             parseFrame.add(new JLabel(""));
             parseFrame.add(new JLabel(""));
 
             parseFrame.add(new JLabel("minimal point<double>"));
-            JTextField minPointField = new JTextField();
+            minPointField = new JTextField();
+            if (lw != null) minPointField.setText(lw.getMinimalPoint() + "");
             parseFrame.add(minPointField);
 
             parseFrame.add(new JLabel("description"));
-            JTextField descField = new JTextField();
+            descField = new JTextField();
+            if (lw != null) descField.setText(lw.getDescription());
             parseFrame.add(descField);
 
             parseFrame.add(new JLabel("tuned in works<int>"));
-            JTextField tunedInWorksField = new JTextField();
+            tunedInWorksField = new JTextField();
+            if (lw != null) tunedInWorksField.setText(lw.getTunedInWorks() + "");
             parseFrame.add(tunedInWorksField);
 
             parseFrame.add(new JLabel("Difficulty(Only {VERY_HARD:1; INSANE:2; TERRIBLE:3} allowed)"));
-            JTextField difficultyField = new JTextField();
+            difficultyField = new JTextField();
+            if (lw != null) difficultyField.setText(lw.getDifficulty().toString());
             parseFrame.add(difficultyField);
 
             parseFrame.add(new JLabel(""));
             parseFrame.add(new JLabel("Person fields"));
 
             parseFrame.add(new JLabel("    name"));
-            JTextField personNameField = new JTextField();
+            personNameField = new JTextField();
+            if (lw != null) personNameField.setText(lw.getAuthor().getName());
             parseFrame.add(personNameField);
 
             parseFrame.add(new JLabel("    passport ID (len>=9)"));
-            JTextField personPassportField = new JTextField();
+            personPassportField = new JTextField();
+            if (lw != null) personPassportField.setText(lw.getAuthor().getPassportId());
             parseFrame.add(personPassportField);
 
             parseFrame.add(new JLabel("    eye color(Only {RED:1; BLUE:2; ORANGE:3; WHITE:4} allowed)"));
-            JTextField personEyeColorField = new JTextField();
+            personEyeColorField = new JTextField();
+            if (lw != null) personEyeColorField.setText(lw.getAuthor().geteyeColor().toString());
             parseFrame.add(personEyeColorField);
 
             parseFrame.add(new JLabel(""));
             parseFrame.add(new JLabel("    Location fields"));
 
             parseFrame.add(new JLabel("        x<float>"));
-            JTextField locationX = new JTextField();
+            locationX = new JTextField();
+            if (lw != null) locationX.setText(lw.getAuthor().getLocation().getX() + "");
             parseFrame.add(locationX);
 
             parseFrame.add(new JLabel("        y<float>"));
-            JTextField locationY = new JTextField();
+            locationY = new JTextField();
+            if (lw != null) locationY.setText(lw.getAuthor().getLocation().getY() + "");
             parseFrame.add(locationY);
 
             parseFrame.add(new JLabel("        name"));
-            JTextField locationNameField = new JTextField();
+            locationNameField = new JTextField();
+            if (lw != null) locationNameField.setText(lw.getAuthor().getLocation().getName());
             parseFrame.add(locationNameField);
+            if (lw == null) {
+                JButton parseButton = new JButton("convert to LabWork");
+                parseButton.addActionListener(e -> {
 
-            JButton parseButton = new JButton("convert to LabWork");
-            parseButton.addActionListener(e -> {
-                Double price = tryParseNumber(priceField.getText(), Double::parseDouble);
-                String lwName = labWorkNameTextField.getText();
-                Float cordsX = tryParseNumber(coordinatesX.getText(), Float::parseFloat);
-                Integer cordsY = tryParseNumber(coordinatesY.getText(), Integer::parseInt);
-                Double minimalPoint = tryParseNumber(minPointField.getText(), Double::parseDouble);
-                String description = descField.getText();
-                Integer tunedInWork = tryParseNumber(tunedInWorksField.getText(), Integer::parseInt);
-                Difficulty difficulty = Difficulty.parse(difficultyField.getText());
-                String personName = personNameField.getText();
-                String personPassport = personPassportField.getText();
-                org.lab6.storedClasses.Color personEyeColor = org.lab6.storedClasses.Color.parse(personEyeColorField.getText());
-                Float locX = tryParseNumber(locationX.getText(), Float::parseFloat);
-                Float locY = tryParseNumber(locationY.getText(), Float::parseFloat);
-                String locName = locationNameField.getText();
-
-                String errorMessage = "";
-                if (price == null) errorMessage += "price must be a double value\n";
-                if (cordsX == null) errorMessage += "Coordinates:x must be a float value\n";
-                if (cordsY == null) errorMessage += "Coordinates:y must be an integer value\n";
-                if (minimalPoint == null) errorMessage += "minimal point must be a double value\n";
-                if (tunedInWork == null) errorMessage += "tuned in works must be an integer value\n";
-                if (difficulty == null) errorMessage += "difficulty must be in {VERY_HARD:1; INSANE:2; TERRIBLE:3}\n";
-                if (personPassport.length() < 9) errorMessage += "person passport ID length must be >=9\n";
-                if (personEyeColor == null)
-                    errorMessage += "person eye color must be in {RED:1; BLUE:2; ORANGE:3; WHITE:4}\n";
-                if (locX == null) errorMessage += "Person:Location:X must be a float value\n";
-                if (locY == null) errorMessage += "Person:Location:Y must be a float value\n";
-
-                if (errorMessage.equals("")) {
-                    Location location = new Location(locX, locY, locName);
-                    Person person = new Person(personName, personPassport, personEyeColor, location);
-                    Coordinates coordinates = new Coordinates(cordsX, cordsY);
-                    LabWork labWork = new LabWork(-1, -1, null, price, lwName, coordinates, "crDate", minimalPoint, description, tunedInWork, difficulty, person);
-                    lw = labWork;
-                    System.out.println(lw);
-                    if(argument==null){
+                    LabWork lw=parseLabWorkFromTExtFields();
+                    if (lw!=null) {
                         SendedCommand sendedCommand = new SendedCommand(commandName, false, "", true, lw);
-                        System.out.println(sendedCommand);
                         Client_UDP_Transmitter.sendObject(sendedCommand);
-                        Message message=(Message) Client_UDP_Transmitter.getObject();
+                        Message message = (Message) Client_UDP_Transmitter.getObject();
                         JOptionPane.showMessageDialog(null, message.getMessage(), "register success", JOptionPane.INFORMATION_MESSAGE);
-
-                    }else{
-                        SendedCommand sendedCommand = new SendedCommand(commandName, true, argument, true, lw);
-                        Client_UDP_Transmitter.sendObject(sendedCommand);
-                        Message message=(Message) Client_UDP_Transmitter.getObject();
-                        JOptionPane.showMessageDialog(null, message.getMessage(), "register success", JOptionPane.INFORMATION_MESSAGE);
+                        parseFrame.dispose();
                     }
-                    parseFrame.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, errorMessage, "parse fail", JOptionPane.INFORMATION_MESSAGE);
-                }
 
-            });
-            parseFrame.add(parseButton);
-
-            parseFrame.setVisible(true);
+                });
+                parseFrame.add(parseButton);
+                parseFrame.setVisible(true);
+            }
+        }
     }
 
-    private static<T> T tryParseNumber(String value, Function<String, T> parser){
-            try {
-                return parser.apply(value);
-            }catch(NumberFormatException e){
+    protected LabWork parseLabWorkFromTExtFields() {
+        Double price = tryParseNumber(priceField.getText(), Double::parseDouble);
+        String lwName = labWorkNameTextField.getText();
+        Float cordsX = tryParseNumber(coordinatesX.getText(), Float::parseFloat);
+        Integer cordsY = tryParseNumber(coordinatesY.getText(), Integer::parseInt);
+        Double minimalPoint = tryParseNumber(minPointField.getText(), Double::parseDouble);
+        String description = descField.getText();
+        Integer tunedInWork = tryParseNumber(tunedInWorksField.getText(), Integer::parseInt);
+        Difficulty difficulty = Difficulty.parse(difficultyField.getText());
+        String personName = personNameField.getText();
+        String personPassport = personPassportField.getText();
+        org.lab6.storedClasses.Color personEyeColor = org.lab6.storedClasses.Color.parse(personEyeColorField.getText());
+        Float locX = tryParseNumber(locationX.getText(), Float::parseFloat);
+        Float locY = tryParseNumber(locationY.getText(), Float::parseFloat);
+        String locName = locationNameField.getText();
 
+        String errorMessage = "";
+        if (price == null) errorMessage += "price must be a double value\n";
+        if (cordsX == null) errorMessage += "Coordinates:x must be a float value\n";
+        if (cordsY == null) errorMessage += "Coordinates:y must be an integer value\n";
+        if (minimalPoint == null) errorMessage += "minimal point must be a double value\n";
+        if (tunedInWork == null) errorMessage += "tuned in works must be an integer value\n";
+        if (difficulty == null)
+            errorMessage += "difficulty must be in {VERY_HARD:1; INSANE:2; TERRIBLE:3}\n";
+        if (personPassport.length() < 9) errorMessage += "person passport ID length must be >=9\n";
+        if (personEyeColor == null)
+            errorMessage += "person eye color must be in {RED:1; BLUE:2; ORANGE:3; WHITE:4}\n";
+        if (locX == null) errorMessage += "Person:Location:X must be a float value\n";
+        if (locY == null) errorMessage += "Person:Location:Y must be a float value\n";
+        if (errorMessage.equals("")) {
+            Location location = new Location(locX, locY, locName);
+            Person person = new Person(personName, personPassport, personEyeColor, location);
+            Coordinates coordinates = new Coordinates(cordsX, cordsY);
+            LabWork labWork = new LabWork(-1, -1, null, price, lwName, coordinates, "crDate", minimalPoint, description, tunedInWork, difficulty, person);
+            return labWork;
+        }else{
+                JOptionPane.showMessageDialog(null, errorMessage, "parse fail", JOptionPane.INFORMATION_MESSAGE);
             }
+        return null;
+    }
+
+    private static <T> T tryParseNumber(String value, Function<String, T> parser) {
+        try {
+            return parser.apply(value);
+        } catch (NumberFormatException e) {
+
+        }
         return null;
     }
 

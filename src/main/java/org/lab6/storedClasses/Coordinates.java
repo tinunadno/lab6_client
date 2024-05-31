@@ -7,7 +7,6 @@ public class Coordinates implements Serializable {
 	private Float x;
 	private Integer y;
 	public Coordinates(float x, int y){
-		if(x<=-9 || y<=-550)throw new WrongValueException("x must be >-9 and y must be>-550");
 		this.x=new Float(x);
 		this.y=new Integer(y);
 		if(this.x==null && this.y==null)

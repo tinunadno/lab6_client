@@ -1,5 +1,7 @@
 package org.lab6.mainClasses.UDPInteraction;
 
+import org.lab6.mainClasses.CommandInteracting.LabWorkEditForm;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -24,7 +26,7 @@ public class Client_UDP_Transmitter {
     public Client_UDP_Transmitter(InetAddress serverAdress, int serverPort) {
         if (transmitter == null) {
             serverAddress = new InetSocketAddress(serverAdress, serverPort);
-            serverAcceptBuffer = ByteBuffer.allocate(5000);
+            serverAcceptBuffer = ByteBuffer.allocate(10000);
             try {
                 channel = DatagramChannel.open();
             } catch (IOException e) {
