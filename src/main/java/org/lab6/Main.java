@@ -26,7 +26,7 @@ public class Main {
         }
         new Client_UDP_Transmitter(address, port);
 
-        Client_UDP_Transmitter.sendObject("getUserToken");
+        Client_UDP_Transmitter.sendObject(new SendedCommand("init", false, null, false, null));
         Main.setUserToken(((Message)(Client_UDP_Transmitter.getObject())).getToken());
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {

@@ -1,5 +1,6 @@
 package org.lab6.mainClasses.CommandInteracting;
 
+import org.lab6.mainClasses.ListUpdateManager;
 import org.lab6.mainClasses.UDPInteraction.Client_UDP_Transmitter;
 import org.lab6.mainClasses.UDPInteraction.Message;
 import org.lab6.mainClasses.UDPInteraction.SendedCommand;
@@ -14,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class UserInterfaceForm {
@@ -34,7 +37,7 @@ public class UserInterfaceForm {
         filterParameter="id";
         filterPattern="";
         initCommands();
-        updateLabWorkList();
+        updateCollection();
         initComponents();
         this.userName=userName;
     }
@@ -61,7 +64,7 @@ public class UserInterfaceForm {
 
         mainFrame.pack();
         mainFrame.setVisible(true);
-
+        (new ListUpdateManager()).start();
 
     }
     private JPanel displayCommands(){
@@ -78,6 +81,7 @@ public class UserInterfaceForm {
         JButton updateButton=new JButton("update list");
         updateButton.addActionListener(e->{
             updateCollection();
+            updateTable();
         });
         commandPanel.add(updateButton);
         return commandPanel;
@@ -92,12 +96,12 @@ public class UserInterfaceForm {
         table.setFillsViewportHeight(true);
 
         ListSelectionModel selectModel= table.getSelectionModel();
-        selectModel.addListSelectionListener(new ListSelectionListener() {
+        table.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                    long res = Long.parseLong((String) (table.getModel().getValueAt(table.getSelectedRow(), 0)));
-                    LabWork lwInstance = currentCollection.stream().filter(lw -> (lw.getID() == res)).findFirst().orElse(null);
-                    new LabWorkEditForm(lwInstance, lwInstance.getUserName().equals(userName));
+            public void mouseClicked(MouseEvent e) {
+                long res = Long.parseLong((String) (table.getModel().getValueAt(table.getSelectedRow(), 0)));
+                LabWork lwInstance = currentCollection.stream().filter(lw -> (lw.getID() == res)).findFirst().orElse(null);
+                new LabWorkEditForm(lwInstance, lwInstance.getUserName().equals(userName));
             }
         });
 
@@ -163,11 +167,6 @@ public class UserInterfaceForm {
         commandName=((ArrayList<String>) Client_UDP_Transmitter.getObject());
     }
 
-    private void updateLabWorkList(){
-        SendedCommand command=new SendedCommand("get_lab_work_list", false, null, false, null);
-        Client_UDP_Transmitter.sendObject(command);
-        currentCollection=((ArrayList<LabWork>) Client_UDP_Transmitter.getObject());
-    }
    private void updateTable(){
         ArrayList<LabWork> filteredList=new ArrayList<LabWork>(currentCollection.stream().filter(lw->lw.getParameterByName(filterParameter).indexOf(filterPattern)!=-1).toList());
         Collections.sort(filteredList, Comparator.naturalOrder());
@@ -190,11 +189,14 @@ public class UserInterfaceForm {
         }
 
     }
-    public static void updateCollection(){
-        SendedCommand sendedCommand=new SendedCommand("get_lab_work_list", false, null, false, null);
+    private void updateCollection(){
+        SendedCommand sendedCommand=new SendedCommand("get_lab_work_list", true, "init", false, null);
         Client_UDP_Transmitter.sendObject(sendedCommand);
         ArrayList<LabWork> acceptedList=(ArrayList<LabWork>) (Client_UDP_Transmitter.getObject());
         currentCollection=acceptedList;
-        uif.updateTable();
+    }
+    public static void updateCollection(ArrayList<LabWork> acceptedList){
+        currentCollection=acceptedList;
+        uif.updateTable();;
     }
 }
